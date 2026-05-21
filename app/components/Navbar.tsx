@@ -1,31 +1,39 @@
-export default function Navbar() {
+"use client";
 
-  const categories = [
-    "Ofertas",
-    "SuperBox",
-    "Ropa",
-    "Calzado",
-    "Accesorios",
-    "Maquillaje",
-    "Peluches",
-    "Otros"
-  ];
+interface NavbarProps {
+  categories: string[];
+  selectedCategory: string;
+  setSelectedCategory: (category: string) => void;
+}
+
+export default function Navbar({
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+}: NavbarProps) {
 
   return (
 
-    <nav className="w-full bg-white border-b border-pink-100">
+    <nav className="w-full bg-[#333] text-white">
+
       <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-hide">
+
         <ul className="flex items-center justify-center gap-8 py-4">
+
           {categories.map((category) => (
 
-            <li key={category}> <a href="#"
-                className="
+            <li key={category}>
+
+              <button
+                onClick={() =>
+                  setSelectedCategory(category)
+                }
+                className={`
                   relative
-                  text-gray-600
                   font-medium
-                  hover:text-pink-500
                   transition-all
                   duration-300
+                  whitespace-nowrap
 
                   after:content-['']
                   after:absolute
@@ -38,12 +46,18 @@ export default function Navbar() {
                   after:duration-300
 
                   hover:after:w-full
-                "
+
+                  ${
+                    selectedCategory === category
+                      ? "text-pink-500 after:w-full"
+                      : "text-white"
+                  }
+                `}
               >
 
                 {category}
 
-              </a>
+              </button>
 
             </li>
 

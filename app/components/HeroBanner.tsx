@@ -1,11 +1,19 @@
+"use client";
+
 import Image from "next/image";
 
-export default function HeroBanner() {
+interface HeroBannerProps {
+  setSelectedCategory: (category: string) => void;
+}
+
+export default function HeroBanner({
+  setSelectedCategory,
+}: HeroBannerProps) {
+
   return (
 
     <section className="relative w-full overflow-hidden">
 
-      {/* IMAGEN FONDO */}
       <div className="relative h-[250px] md:h-[500px] w-full">
 
         <Image
@@ -16,23 +24,24 @@ export default function HeroBanner() {
           className="object-cover"
         />
 
-        {/* OVERLAY */}
         <div className="absolute inset-0 bg-black/10" />
 
       </div>
 
-      {/* CONTENIDO */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
 
         <h1 className="text-4xl md:text-7xl font-bold text-white drop-shadow-lg">
-          SolangeSublime 
+          SolangeSublime
         </h1>
 
         <p className="mt-4 text-sm md:text-xl text-white max-w-2xl">
-          Ropa, accesorios, peluches y dulces con temática anime 
+          Ropa, accesorios, peluches y dulces con temática anime
         </p>
 
         <button
+          onClick={() =>
+            setSelectedCategory("Todos")
+          }
           className="
             mt-6
             bg-pink-500

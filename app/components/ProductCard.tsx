@@ -1,16 +1,18 @@
 import Image from "next/image";
 import { Heart, ShoppingCart } from "lucide-react";
 
+export interface Producto {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  imagen_url: string;
+  categoria: string;
+  favorito: boolean;
+}
+
 interface ProductCardProps {
-  producto: {
-    id: number;
-    nombre: string;
-    descripcion: string;
-    precio: number;
-    imagen_url: string;
-    categoria: string;
-    favorito: boolean;
-  };
+  producto: Producto;
 }
 
 export default function ProductCard({ producto }: ProductCardProps) {

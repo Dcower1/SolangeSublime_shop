@@ -1,11 +1,14 @@
-import { supabase } from "@/app/lib/supabase";
-import ProductCard from "./ProductCard";
+import ProductCard, { type Producto } from "./ProductCard";
 
-export default async function ProductsSection() {
+interface ProductsSectionProps {
+  productos: Producto[];
+  title: string;
+}
 
-  const { data: productos } = await supabase
-    .from("productos")
-    .select("*");
+export default function ProductsSection({
+  productos,
+  title,
+}: ProductsSectionProps) {
 
   return (
 
@@ -13,34 +16,32 @@ export default async function ProductsSection() {
 
       <div className="max-w-7xl mx-auto px-6">
 
-        <div className="flex items-center justify-between mb-8">
+        <h2 className="text-3xl font-bold text-pink-500 mb-8">
 
-          <h2 className="text-3xl font-bold text-pink-500">
-            Productos destacados 
-          </h2>
+          {title === "Todos"
+            ? "Productos destacados ✨"
+            : title}
 
-        </div>
+        </h2>
 
-        {/* CARRUSEL HORIZONTAL */}
         <div
-        className="
+          className="
             flex
             gap-6
             overflow-x-auto
             pb-4
             scrollbar-hide
-            scroll-smooth
-            touch-pan-x
-            snap-x
-            snap-mandatory
-        "
+          "
         >
 
-        {productos?.map((producto) => (
-            <div key={producto.id} className="snap-start">
-                <ProductCard producto={producto} />
-            </div>
-        ))}
+          {productos.map((producto) => (
+
+            <ProductCard
+              key={producto.id}
+              producto={producto}
+            />
+
+          ))}
 
         </div>
 

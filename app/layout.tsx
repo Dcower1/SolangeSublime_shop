@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-// @ts-ignore: side-effect import of CSS module declaration missing
 import "./globals.css";
 
 const poppins = Poppins({
