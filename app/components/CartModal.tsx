@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useMemo } from "react";
+import { Trash2 } from "lucide-react";
 
 import { useCart } from "@/app/context/CartContext";
 
@@ -14,8 +15,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   const { cart, removeFromCart, setQuantity } = useCart();
 
   const total = useMemo(
-    () =>
-      cart.reduce((acc, item) => acc + item.precio * item.cantidad, 0),
+    () => cart.reduce((acc, item) => acc + item.precio * item.cantidad, 0),
     [cart]
   );
 
@@ -25,7 +25,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
     <div
       className={
         "fixed inset-0 z-50 flex justify-end transition-opacity duration-200 " +
-        (isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none")
+        (isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0")
       }
       onClick={handleBackdropClick}
       role="dialog"
@@ -36,16 +36,16 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
 
       <div
         className={
-          "relative w-full md:w-[450px] h-full bg-white p-6 overflow-y-auto transition-transform duration-200 " +
+          "relative h-full w-full overflow-y-auto bg-white p-6 transition-transform duration-200 md:w-[450px] " +
           (isOpen ? "translate-x-0" : "translate-x-full")
         }
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-pink-500">Tu carrito 🛒</h2>
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-pink-500">Tu carrito</h2>
 
           <button onClick={onClose} className="text-2xl" aria-label="Cerrar">
-            ✖
+            ×
           </button>
         </div>
 
@@ -55,12 +55,12 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
           ) : (
             cart.map((item) => (
               <div key={item.id} className="flex gap-4 border-b pb-4">
-                <div className="relative w-20 h-20">
+                <div className="relative h-20 w-20">
                   <Image
                     src={item.imagen_url}
                     alt={item.nombre}
                     fill
-                    className="object-cover rounded-xl"
+                    className="rounded-xl object-cover"
                   />
                 </div>
 
@@ -70,7 +70,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                     <button
                       type="button"
                       onClick={() => setQuantity(item.id, item.cantidad - 1)}
-                      className="w-9 h-9 rounded-full border border-gray-200 hover:bg-gray-50"
+                      className="h-9 w-9 rounded-full border border-gray-200 hover:bg-gray-50"
                       aria-label="Disminuir"
                     >
                       −
@@ -86,14 +86,14 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                         const parsed = Number(e.target.value);
                         setQuantity(item.id, parsed);
                       }}
-                      className="w-16 text-center border border-gray-200 rounded-xl py-2"
+                      className="w-16 rounded-xl border border-gray-200 py-2 text-center"
                       aria-label="Cantidad"
                     />
 
                     <button
                       type="button"
                       onClick={() => setQuantity(item.id, item.cantidad + 1)}
-                      className="w-9 h-9 rounded-full border border-gray-200 hover:bg-gray-50"
+                      className="h-9 w-9 rounded-full border border-gray-200 hover:bg-gray-50"
                       aria-label="Aumentar"
                       disabled={
                         typeof item.stock === "number" &&
@@ -109,17 +109,19 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                       </span>
                     )}
                   </div>
-                  <p className="text-pink-500 font-bold">
+
+                  <p className="font-bold text-pink-500">
                     ${item.precio * item.cantidad}
                   </p>
                 </div>
 
                 <button
+                  type="button"
                   onClick={() => removeFromCart(item.id)}
-                  aria-label="Eliminar"
-                  className="text-xl"
+                  className="mt-1 inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-red-200 text-red-500 transition-all hover:bg-red-50 hover:text-red-600"
+                  aria-label={`Eliminar ${item.nombre}`}
                 >
-                  ❌
+                  <Trash2 className="h-4 w-4" />
                 </button>
               </div>
             ))
@@ -131,15 +133,15 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
 
           <button
             className="
-              w-full
               mt-4
-              bg-green-500
-              hover:bg-green-600
-              text-white
-              py-4
+              w-full
               rounded-2xl
+              bg-green-500
+              py-4
               font-bold
+              text-white
               transition-all
+              hover:bg-green-600
             "
             disabled={cart.length === 0}
           >

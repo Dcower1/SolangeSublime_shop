@@ -27,8 +27,8 @@ export default function ProductCard({ producto }: ProductCardProps) {
   return (
     <div
       className="
-        min-w-[280px]
-        max-w-[280px]
+        w-full
+        min-w-0
         bg-white
         rounded-3xl
         overflow-hidden
@@ -40,6 +40,8 @@ export default function ProductCard({ producto }: ProductCardProps) {
         border
         border-pink-100
         flex-shrink-0
+        md:min-w-[280px]
+        md:max-w-[280px]
       "
     >
       {/* IMAGEN */}

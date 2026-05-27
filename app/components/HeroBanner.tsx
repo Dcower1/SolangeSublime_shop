@@ -1,14 +1,5 @@
-"use client";
-
 import Image from "next/image";
-
-interface HeroBannerProps {
-  setSelectedCategory: (category: string) => void;
-}
-
-export default function HeroBanner({
-  setSelectedCategory,
-}: HeroBannerProps) {
+export default function HeroBanner() {
 
   return (
 
@@ -38,10 +29,8 @@ export default function HeroBanner({
           Ropa, accesorios, peluches y dulces con temática anime
         </p>
 
-        <button
-          onClick={() =>
-            setSelectedCategory("Todos")
-          }
+        <a
+          href="#catalogo"
           className="
             mt-6
             bg-pink-500
@@ -59,7 +48,7 @@ export default function HeroBanner({
           "
         >
           Ver productos
-        </button>
+        </a>
 
       </div>
 

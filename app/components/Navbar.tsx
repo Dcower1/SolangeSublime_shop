@@ -1,26 +1,42 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 import { Menu, X } from "lucide-react";
 
+import {
+  getCategoryHref,
+  normalizeCategory,
+} from "@/app/lib/catalog";
+
 interface NavbarProps {
   categories: string[];
-  selectedCategory: string;
-  setSelectedCategory: (category: string) => void;
+  activeCategory: string;
 }
 
 export default function Navbar({
   categories,
-  selectedCategory,
-  setSelectedCategory,
+  activeCategory,
 }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleSelectCategory = (category: string) => {
-    setSelectedCategory(category);
-    setIsMobileMenuOpen(false);
-  };
+  const isActive = (category: string) =>
+    normalizeCategory(activeCategory) === normalizeCategory(category);
+
+  const desktopLinkClass = (category: string) =>
+    `
+      relative whitespace-nowrap font-medium transition-all duration-300
+      after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-pink-500 after:transition-all after:duration-300 after:content-['']
+      hover:after:w-full
+      ${isActive(category) ? "text-pink-500 after:w-full" : "text-white"}
+    `;
+
+  const mobileLinkClass = (category: string) =>
+    `
+      w-full rounded-2xl px-3 py-3 text-left text-sm font-medium transition-all duration-300
+      ${isActive(category) ? "bg-pink-500 text-white" : "bg-white/5 text-white hover:bg-white/10"}
+    `;
 
   return (
     <nav className="w-full bg-[#333] text-white">
@@ -47,25 +63,12 @@ export default function Navbar({
         </div>
 
         <div className="hidden md:block">
-          <ul className="flex items-center justify-center gap-8 py-4 overflow-x-auto scrollbar-hide">
+          <ul className="flex items-center justify-center gap-8 overflow-x-auto py-4 scrollbar-hide">
             {categories.map((category) => (
               <li key={category}>
-                <button
-                  type="button"
-                  onClick={() => handleSelectCategory(category)}
-                  className={`
-                    relative whitespace-nowrap font-medium transition-all duration-300
-                    after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-pink-500 after:transition-all after:duration-300 after:content-['']
-                    hover:after:w-full
-                    ${
-                      selectedCategory === category
-                        ? "text-pink-500 after:w-full"
-                        : "text-white"
-                    }
-                  `}
-                >
+                <Link href={getCategoryHref(category)} className={desktopLinkClass(category)}>
                   {category}
-                </button>
+                </Link>
               </li>
             ))}
           </ul>
@@ -80,20 +83,13 @@ export default function Navbar({
           <ul className="grid max-h-[70vh] grid-cols-2 gap-2 overflow-y-auto py-3">
             {categories.map((category) => (
               <li key={category}>
-                <button
-                  type="button"
-                  onClick={() => handleSelectCategory(category)}
-                  className={`
-                    w-full rounded-2xl px-3 py-3 text-left text-sm font-medium transition-all duration-300
-                    ${
-                      selectedCategory === category
-                        ? "bg-pink-500 text-white"
-                        : "bg-white/5 text-white hover:bg-white/10"
-                    }
-                  `}
+                <Link
+                  href={getCategoryHref(category)}
+                  className={mobileLinkClass(category)}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {category}
-                </button>
+                </Link>
               </li>
             ))}
           </ul>

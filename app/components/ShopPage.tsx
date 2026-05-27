@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 import Header from "./Header";
 import Navbar from "./Navbar";
 import HeroBanner from "./HeroBanner";
@@ -11,87 +7,40 @@ import { type Producto } from "./ProductCard";
 
 interface ShopPageProps {
   productos: Producto[];
-}
-
-function normalizeCategory(value: unknown) {
-  if (typeof value !== "string") return "";
-  return value
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "");
+  categories: string[];
+  activeCategory: string;
+  sectionTitle?: string;
+  showHeroBanner?: boolean;
+  isCategoryView?: boolean;
 }
 
 export default function ShopPage({
   productos,
+  categories,
+  activeCategory,
+  sectionTitle,
+  showHeroBanner = true,
+  isCategoryView = false,
 }: ShopPageProps) {
-
-  const [selectedCategory, setSelectedCategory] =
-    useState("Todos");
-
-  const baseCategories = [
-    "Todos",
-    "Ofertas",
-    "SuperBox",
-    "Ropa",
-    "Calzado",
-    "Accesorios",
-    "Maquillaje",
-    "Peluches",
-    "Otros",
-  ];
-
-  const dataCategories = Array.from(
-    new Set(
-      productos
-        .map((p) => p?.categoria)
-        .filter((c): c is string => typeof c === "string" && c.trim() !== "")
-    )
-  );
-
-  const categories = [
-    ...baseCategories,
-    ...dataCategories.filter(
-      (c) =>
-        !baseCategories.some(
-          (base) => normalizeCategory(base) === normalizeCategory(c)
-        )
-    ),
-  ];
-
-  // FILTRAR PRODUCTOS
-  const filteredProducts =
-    selectedCategory === "Todos"
-      ? productos
-      : productos.filter(
-          (producto) =>
-            normalizeCategory(producto?.categoria) ===
-            normalizeCategory(selectedCategory)
-        );
-
   return (
-
-    <main className="bg-[#f5f5f5] min-h-screen">
-
+    <main className="min-h-screen bg-[#f5f5f5]">
       <Header />
 
       <Navbar
         categories={categories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
+        activeCategory={activeCategory}
       />
 
-      <HeroBanner
-        setSelectedCategory={setSelectedCategory}
-      />
+      {showHeroBanner && <HeroBanner />}
 
       <ProductsSection
-        productos={filteredProducts}
-        title={selectedCategory}
+        key={`${activeCategory}-${productos.map((product) => product.id).join(",")}`}
+        productos={productos}
+        title={sectionTitle ?? activeCategory}
+        isCategoryView={isCategoryView}
       />
 
       <Footer />
-
     </main>
   );
 }
