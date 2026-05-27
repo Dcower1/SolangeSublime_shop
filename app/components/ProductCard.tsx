@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { Heart, ShoppingCart } from "lucide-react";
+import { useCart } from "@/app/context/CartContext";
 
 export interface Producto {
   id: number;
@@ -9,6 +12,7 @@ export interface Producto {
   imagen_url: string;
   categoria: string;
   favorito: boolean;
+  stock?: number | null;
 }
 
 interface ProductCardProps {
@@ -16,6 +20,10 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ producto }: ProductCardProps) {
+  const { cart, addToCart } = useCart();
+
+  const inCart = cart.some((item) => item.id === producto.id);
+
   return (
     <div
       className="
@@ -103,26 +111,31 @@ export default function ProductCard({ producto }: ProductCardProps) {
 
           {/* BOTON */}
           <button
-            className="
+            onClick={() => addToCart(producto)}
+            className={`
               flex
               items-center
               gap-2
-              bg-pink-500
-              hover:bg-pink-600
-              text-white
-              px-3
-              py-2
               rounded-full
               shadow-md
               hover:scale-105
               transition-all
               duration-300
+              px-3
+              py-2
               whitespace-nowrap
               flex-shrink-0
-            "
+              ${
+                inCart
+                  ? "bg-pink-50 hover:bg-pink-100 text-pink-600 border border-pink-200"
+                  : "bg-pink-500 hover:bg-pink-600 text-white"
+              }
+            `}
           >
             <ShoppingCart className="w-4 h-4" />
-            <span className="text-sm font-medium">Comprar</span>
+            <span className="text-sm font-medium">
+              {inCart ? "Agregado" : "Comprar"}
+            </span>
           </button>
         </div>
       </div>
