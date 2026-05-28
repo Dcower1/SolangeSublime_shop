@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import { type Producto } from "./ProductCard";
 
 interface ShopPageProps {
+  allProductos: Producto[];
   productos: Producto[];
   categories: string[];
   activeCategory: string;
@@ -15,6 +16,7 @@ interface ShopPageProps {
 }
 
 export default function ShopPage({
+  allProductos,
   productos,
   categories,
   activeCategory,
@@ -24,7 +26,7 @@ export default function ShopPage({
 }: ShopPageProps) {
   return (
     <main className="min-h-screen bg-[#f5f5f5]">
-      <Header />
+      <Header productos={allProductos} />
 
       <Navbar
         categories={categories}

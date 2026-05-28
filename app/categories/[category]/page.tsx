@@ -65,6 +65,7 @@ export default async function CategoryPage({
 
   return (
     <ShopPage
+      allProductos={allProducts}
       productos={searchedProducts}
       categories={categories}
       activeCategory={resolvedCategory}

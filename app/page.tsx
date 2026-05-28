@@ -29,6 +29,7 @@ export default async function Home({ searchParams }: HomePageProps) {
 
   return (
     <ShopPage
+      allProductos={allProducts}
       productos={filteredProducts}
       categories={categories}
       activeCategory={HOME_PAGE}
